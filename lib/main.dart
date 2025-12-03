@@ -120,10 +120,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PizzaDetailScreen(
-                        pizza: pizza,
-                        isNew: false,
-                      ),
+                      builder: (context) =>
+                          PizzaDetailScreen(pizza: pizza, isNew: false),
                     ),
                   );
                 },
@@ -138,10 +136,8 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PizzaDetailScreen(
-                pizza: Pizza(),
-                isNew: true,
-              ),
+              builder: (context) =>
+                  PizzaDetailScreen(pizza: Pizza(), isNew: true),
             ),
           );
         },

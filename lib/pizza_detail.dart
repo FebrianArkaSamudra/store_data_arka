@@ -5,7 +5,11 @@ import 'httphelper.dart';
 class PizzaDetailScreen extends StatefulWidget {
   final Pizza pizza;
   final bool isNew;
-  const PizzaDetailScreen({super.key, required this.pizza, required this.isNew});
+  const PizzaDetailScreen({
+    super.key,
+    required this.pizza,
+    required this.isNew,
+  });
   @override
   State<PizzaDetailScreen> createState() => _PizzaDetailScreenState();
 }
