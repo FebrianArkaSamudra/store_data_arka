@@ -1,3 +1,61 @@
+# Flutter RESTful API & Local Storage Demo
+## _Practicum Week 14 — Febrian Arka Samudra (2341720066)_
+
+This Flutter application demonstrates several essential concepts in modern mobile development:
+
+- REST API CRUD (GET, POST, PUT, DELETE) using a custom HttpHelper
+- ListView + Dismissible for swipe-to-delete functionality
+- SharedPreferences for simple local storage
+- Flutter Secure Storage for encrypted data
+- Path Provider for reading and managing app directories
+- Navigation & Detail Form for creating and editing pizza items
+
+---  
+
+## Application Demo Screens
+### SharedPreferences, Secure Storage, and Path Provider
+Question 1
+**Features:**
+- Track how many times the app has been opened
+- Display document & cache directories
+- Save encrypted user password
+- Read file from app directory
+
+![alt text](img/Week14_Question1.png)
+--- 
+### Fetching Pizza List from REST API
+Question 2
+
+The app retrieves pizza data from a remote RESTful API using an asynchronous HttpHelper service.
+The data is displayed using FutureBuilder and rendered inside a scrollable ListView. Each item includes pizza name, description, and price, automatically updated whenever the API response changes.
+
+![alt text](img/Week14_Question2.gif)
+![alt text](img/Week14_Question2(2).png)
+--- 
+### Adding a New Pizza
+Question 3
+Users can add new pizza items through a dedicated Pizza Detail Form.
+The form supports:
+
+- entering a name, description, and price
+- validating the input
+- sending a POST request to the REST API
+After saving, the item is sent to the server and the pizza list updates immediately.
+![alt text](img/Week14_Question3.gif)
+--- 
+### Swipe to Delete (Dismissible)
+Question 4
+Each pizza entry supports swipe to delete using Flutter's Dismissible widget.
+When the user swipes an item:
+
+- it is instantly removed from the user interface
+- a DELETE request is sent to the REST API
+- a confirmation snackbar appears
+
+This interaction creates a smooth and intuitive deletion workflow.
+![alt text](img/Week14_Question4.gif)
+
+
 # 📘 WEEK 13 – JSON, SharedPreferences, Filesystem & Encryption in Flutter
 
 ## Practicum 1 – Converting Dart Model to JSON

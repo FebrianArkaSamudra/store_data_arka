@@ -33,7 +33,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // Tambahkan kembali method yang hilang
   Future<void> deletePreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
@@ -64,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Pizza> myPizzas = [];
-  // Metode untuk mengambil data pizza dari API
   Future<List<Pizza>> callPizzas() async {
     HttpHelper helper = HttpHelper();
     List<Pizza> pizzas = await helper.getPizzaList();
@@ -92,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text('JSON - Febrian Arka Samudra - 2341720066'),
       ),
+
       body: FutureBuilder<List<Pizza>>(
         future: callPizzas(),
         builder: (BuildContext context, AsyncSnapshot<List<Pizza>> snapshot) {
@@ -101,43 +100,77 @@ class _MyHomePageState extends State<MyHomePage> {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
+
+          final pizzas = snapshot.data!;
+
           return ListView.builder(
-            itemCount: (snapshot.data == null) ? 0 : snapshot.data!.length,
+            itemCount: pizzas.length,
             itemBuilder: (BuildContext context, int position) {
-              final pizza = snapshot.data![position];
-              return ListTile(
-                title: Text(
-                  pizza.pizzaName ?? '',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+              final pizza = pizzas[position];
+
+              return Dismissible(
+                key: Key(pizza.id?.toString() ?? position.toString()),
+                direction: DismissDirection.endToStart,
+
+                background: Container(
+                  color: Colors.red,
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: const Icon(Icons.delete, color: Colors.white),
                 ),
-                subtitle: Text(
-                  (pizza.description ?? '') +
-                      ' - € ' +
-                      (pizza.price?.toString() ?? '0'),
-                  style: const TextStyle(fontSize: 15),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          PizzaDetailScreen(pizza: pizza, isNew: false),
-                    ),
+
+                onDismissed: (direction) async {
+                  HttpHelper helper = HttpHelper();
+
+                  setState(() {
+                    pizzas.removeAt(position);
+                  });
+
+                  if (pizza.id != null) {
+                    await helper.deletePizza(pizza.id!);
+                  }
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("${pizza.pizzaName} deleted")),
                   );
                 },
+
+                child: ListTile(
+                  title: Text(
+                    pizza.pizzaName ?? '',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(
+                    "${pizza.description ?? ''} - € ${pizza.price?.toString() ?? '0'}",
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PizzaDetailScreen(
+                          pizza: pizza,
+                          isNew: false,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               );
             },
           );
         },
       ),
+
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  PizzaDetailScreen(pizza: Pizza(), isNew: true),
+              builder: (context) => PizzaDetailScreen(
+                pizza: Pizza(),
+                isNew: true,
+              ),
             ),
           );
         },
