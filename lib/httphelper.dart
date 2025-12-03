@@ -4,6 +4,27 @@ import 'dart:convert';
 import 'model/pizza.dart';
 
 class HttpHelper {
+  Future<String> postPizza(Pizza pizza) async {
+    const postPath = '/pizza';
+    String post = json.encode(pizza.toJson());
+    Uri url = Uri.https(authority, postPath);
+    http.Response r = await http.post(url, body: post);
+    return r.body;
+  }
+
+  Future<String> putPizza(Pizza pizza) async {
+    const putPath = '/pizza';
+    String put = json.encode(pizza.toJson());
+    Uri url = Uri.https(authority, putPath);
+    http.Response r = await http.put(url, body: put);
+    return r.body;
+  }
+
+  static final HttpHelper _httpHelper = HttpHelper._internal();
+  HttpHelper._internal();
+  factory HttpHelper() {
+    return _httpHelper;
+  }
   final String authority = '85m8y.wiremockapi.cloud';
   final String path = 'pizzalist';
   Future<List<Pizza>> getPizzaList() async {

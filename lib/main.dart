@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'model/pizza.dart';
 import 'httphelper.dart';
+import 'pizza_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -88,7 +89,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('JSON - Febrian Arka Samudra - 2341720066')),
+      appBar: AppBar(
+        title: const Text('JSON - Febrian Arka Samudra - 2341720066'),
+      ),
       body: FutureBuilder<List<Pizza>>(
         future: callPizzas(),
         builder: (BuildContext context, AsyncSnapshot<List<Pizza>> snapshot) {
@@ -104,15 +107,42 @@ class _MyHomePageState extends State<MyHomePage> {
               final pizza = snapshot.data![position];
               return ListTile(
                 title: Text(
-                  pizza.pizzaName,
+                  pizza.pizzaName ?? '',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  pizza.description + ' - € ' + pizza.price.toString(),
+                  (pizza.description ?? '') +
+                      ' - € ' +
+                      (pizza.price?.toString() ?? '0'),
                   style: const TextStyle(fontSize: 15),
                 ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PizzaDetailScreen(
+                        pizza: pizza,
+                        isNew: false,
+                      ),
+                    ),
+                  );
+                },
               );
             },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PizzaDetailScreen(
+                pizza: Pizza(),
+                isNew: true,
+              ),
+            ),
           );
         },
       ),
